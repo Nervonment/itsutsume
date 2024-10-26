@@ -26,10 +26,10 @@ enum EventKind {
 }
 
 fn main() -> anyhow::Result<()> {
-    let mut agent = MinimaxSearch::with_max_depth(3);
     let mut game = Game::<ComplicatedEvalBoard>::new();
     let mut player_pos = (WIDTH / 2, HEIGHT / 2);
     let mut agent_pos = None;
+    let mut total_step = 0;
     let mut finished = false;
     let (tx, rx) = channel();
 
@@ -79,6 +79,7 @@ fn main() -> anyhow::Result<()> {
                 player_pos = (WIDTH / 2, HEIGHT / 2);
                 agent_pos = None;
                 finished = false;
+                total_step = 0;
                 stdout().execute(Clear(ClearType::All))?;
                 show_board(game.get_board(), player_pos, agent_pos)?;
                 continue;
@@ -93,15 +94,18 @@ fn main() -> anyhow::Result<()> {
             std::result::Result::Ok(res) => res,
             Err(_) => continue,
         };
+        total_step += 1;
         show_board(game.get_board(), player_pos, agent_pos)?;
         if show_res(&res)? {
             finished = true;
             continue;
         }
 
+        let mut agent = MinimaxSearch::with_max_depth(if total_step > 50 { 3 } else { 4 });
         let (r, c) = agent.action(game.get_board(), itsutsume::board::Side::White);
         agent_pos = Some((r, c));
         let res = game.drop(r, c).unwrap();
+        total_step += 1;
         show_board(game.get_board(), player_pos, agent_pos)?;
         if show_res(&res)? {
             finished = true;

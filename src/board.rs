@@ -33,7 +33,7 @@ pub trait Board: Default {
     }
     fn winner(&self) -> Side {
         for r in 0..HEIGHT {
-            for c in 0..WIDTH - 5 {
+            for c in 0..WIDTH - 4 {
                 if !self.is_cell_empty(r, c)
                     && eq5(
                         &self.get_cell(r, c),
@@ -48,7 +48,7 @@ pub trait Board: Default {
             }
         }
 
-        for r in 0..HEIGHT - 5 {
+        for r in 0..HEIGHT - 4 {
             for c in 0..WIDTH {
                 if !self.is_cell_empty(r, c)
                     && eq5(
@@ -64,8 +64,8 @@ pub trait Board: Default {
             }
         }
 
-        for r in 0..HEIGHT - 5 {
-            for c in 0..WIDTH - 5 {
+        for r in 0..HEIGHT - 4 {
+            for c in 0..WIDTH - 4 {
                 if !self.is_cell_empty(r + 2, c + 2)
                     && (eq5(
                         &self.get_cell(r, c),
