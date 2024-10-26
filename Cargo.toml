@@ -1,0 +1,19 @@
+[package]
+name = "itsutsume"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+rand = "0.8.5"
+
+[dev-dependencies]
+anyhow = "1.0.91"
+criterion = "0.5.1"
+crossterm = "0.28.1"
+
+[[example]]
+name = "tui_example"
+
+[[bench]]
+name = "benches"
+harness = false
